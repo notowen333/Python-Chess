@@ -12,4 +12,4 @@ which remain.
 To show the background of the board, I use the colorama python library, and I use unicode characters to display
 the pieces.
 
-![checkmate](https://github.com/[notowen333]/[Python-Chess]/blob/[main]/checkmate.jpg?raw=true)
+https://user-images.githubusercontent.com/51685858/102663100-24778800-414e-11eb-9d4a-b4aee24581a2.jpg
