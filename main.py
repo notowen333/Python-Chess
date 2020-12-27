@@ -1,9 +1,11 @@
 from chessengine.board import Board
 import sys
+print('cherries\n')
+
 
 def main():
+    print('bananas\n\n\n')
     currboard = Board(True)
-    print(currboard)
     whiteToMove = True
 
     while True:
@@ -45,4 +47,5 @@ def main():
 
 
 if __name__ == '__main__':
+    print('apples ... and ')
     main()
