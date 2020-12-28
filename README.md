@@ -12,5 +12,8 @@ To show the background of the board, I use the colorama python library, and I us
 
 Before each move, all possible moves are generated and displayed. The game ends if there are no available moves and the king is not in check—stalemate—or if there are no available moves and the king is in check—checkmate.
 
-Example image:
+Gameplay Images:
+
 ![Checkmate](https://user-images.githubusercontent.com/51685858/102663100-24778800-414e-11eb-9d4a-b4aee24581a2.jpg)
+
+![Gameplay](https://user-images.githubusercontent.com/51685858/103182577-702adf80-487a-11eb-9c55-b122a9f5b563.png)
