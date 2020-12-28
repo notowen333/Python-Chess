@@ -631,88 +631,9 @@ class Board:
         return l
 
     def generateQueenSquares(self, Piece, occupiedpositions):
-
-        l = []
-        row, rank = Piece.pos
-
-        #try up
-        crow = row + 1
-        while crow < 8:
-            l.append((crow, rank))
-            if (crow,rank) in occupiedpositions:
-                break
-            crow += 1
-
-        #try down
-        crow = row - 1
-        while crow > - 1:
-            l.append((crow, rank))
-            if (crow,rank) in occupiedpositions:
-                break
-            crow -= 1
-
-        #try right
-        crank = rank + 1
-        while crank < 8:
-            l.append((row, crank))
-            if (row,crank) in occupiedpositions:
-                break
-            crank += 1
-
-        crank = rank - 1
-        while crank > - 1:
-            l.append((row, crank))
-            if (row,crank) in occupiedpositions:
-                break
-            crank -= 1
-
-        #try NE
-        crow = row + 1
-        crank = rank + 1
-        while crow < 8 and crank < 8:
-            l.append((row, crank))
-            if (row,crank) in occupiedpositions:
-                break
-            crow += 1
-            crank += 1
-
-            
-        #try NW
-        crow = row + 1
-        crank = rank - 1
-        while crow < 8 and crank > -1:
-            l.append((row, crank))
-            if (row,crank) in occupiedpositions:
-                break
-            crow += 1
-            crank -= 1
-
-        #try SE
-        crow = row - 1
-        crank = rank + 1
-        while crow > - 1 and crank < 8:
-            l.append((row, crank))
-            if (row,crank) in occupiedpositions:
-                break
-            crow -= 1
-            crank += 1
-
-        #try SW
-        crow = row - 1
-        crank = rank - 1
-        while crow > -1 and crank > -1:
-            if (crow, crank) not in occupiedpositions:
-                l.append((crow, crank))
-            else:
-                l.append((crow, crank))
-                break
-            crow -= 1
-            crank -= 1
-
-        return l
+       return self.generateBishopSquares(Piece, occupiedpositions) + self.generateRookSquares(Piece, occupiedpositions)
+        
     
-
-
     def generateKingSquares(self, Piece, occupiedpositions):
 
         row, rank = Piece.pos
