@@ -36,11 +36,14 @@ def main():
 
         
         currboard.move(entered_move, whiteToMove)
+        if currboard.isStale():
+            print(currboard)
+            print('Stalemate by repitition')
+            sys.exit()
+
+        print(currboard.stale_game)
 
         currboard.createboard()
-        print(currboard)
-
-
         whiteToMove = not whiteToMove
 
 

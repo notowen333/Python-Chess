@@ -2,6 +2,8 @@ from colorama import Fore, Back, Style
 import copy
 import sys
 from chessengine.pieces import Pawn, Rook, Knight, Queen, King, Bishop, Piece
+import hashlib
+
 
 #global constants
 rank_letters = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'}
@@ -16,10 +18,13 @@ kmoves = {(2,1),(2,-1),(-2,1),(-2,-1),(1,2),(1,-2),(-1,2),(-1,-2)}
 kingmoves = {(0,1),(1,0),(1,1),(-1,-1),(-1,0),(0,-1),(1,-1),(-1,1)}
 
 
+
 class Board:
 
     def __init__(self,isNew,whitepieces=[],blackpieces=[]):
         self.board = []
+        self.stale_game = {}
+        self.movecounter = 0
     
         if isNew:
 
@@ -41,7 +46,8 @@ class Board:
         self.enpassant = []
 
         self.createboard()
-        
+
+
 
     def createboard(self):
         self.board = []
@@ -888,7 +894,6 @@ class Board:
 
     def move(self, move, whiteToMove):
 
-
         if whiteToMove:
             castlerow = 0
         else:
@@ -942,8 +947,22 @@ class Board:
                 self.whitepieces.remove(self.board[targetrow][targetrank])
             
             currPiece.move((targetrow, targetrank))
+
+        self.hashBoard()
+        self.movecounter += 1
         
 
+    def hashBoard(self):
+        
+        hash_key = hashlib.sha256(str(self.board).encode('utf-8')).hexdigest()
+        try:
+            self.stale_game[hash_key] += 1
+        except KeyError:
+            self.stale_game[hash_key] = 1
+
+    def isStale(self):
+        return max(self.stale_game.values()) >= 3
+        
     
     def __str__(self):
 
