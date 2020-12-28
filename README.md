@@ -4,7 +4,7 @@ Chess built out in python to be played in the terminal. Eventually a chess AI wi
 This Chess game uses long-form algebraic chess notation (So you say e2-e4, instead of e4, or you say Kb1xc3 to
 say knight takes on c3). 
 
-Right now, it's missing en-passant, pawn promtion, and stalemate by repitition. 
+Right now, it's missing en-passant and pawn promtion.
 
 The structure of the code is Object Oriented. So each piece is an object and the board is an object that contains all the pices. The board is re-rendered after each move to show all of the pieces which remain.
 
