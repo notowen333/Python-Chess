@@ -47,18 +47,13 @@ class Board:
 
         self.createboard()
 
-
-
     def createboard(self):
         self.board = []
         for _ in range (8):
             row = [None, None, None, None, None, None, None, None]
             self.board.append(row)
     
-        for Piece in self.whitepieces:
-            row, rank = Piece.pos
-            self.board[row][rank] = Piece
-        for Piece in self.blackpieces:
+        for Piece in (self.whitepieces + self.blackpieces):
             row, rank = Piece.pos
             self.board[row][rank] = Piece
 

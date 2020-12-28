@@ -41,8 +41,6 @@ def main():
             print('Stalemate by repitition')
             sys.exit()
 
-        print(currboard.stale_game)
-
         currboard.createboard()
         whiteToMove = not whiteToMove
 
