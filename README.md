@@ -14,6 +14,8 @@ Before each move, all possible moves are generated and displayed. The game ends 
 
 Gameplay Images:
 
-![Checkmate](https://user-images.githubusercontent.com/51685858/102663100-24778800-414e-11eb-9d4a-b4aee24581a2.jpg)
 
 ![Gameplay](https://user-images.githubusercontent.com/51685858/103182577-702adf80-487a-11eb-9c55-b122a9f5b563.png)
+
+![Checkmate](https://user-images.githubusercontent.com/51685858/102663100-24778800-414e-11eb-9d4a-b4aee24581a2.jpg)
+
