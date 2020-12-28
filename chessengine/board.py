@@ -794,15 +794,11 @@ class Board:
 
         currPiece = self.board[crow][crank]
 
-        if type(currPiece) == Pawn:
+        pieceset = {Pawn, King, Rook}
+
+        if type(currPiece) in pieceset:
             currPiece.hasmoved = True
-        
-        if type(currPiece) == King:
-            currPiece.hasmoved = True
-        
-        if type(currPiece) == Rook:
-            currPiece.hasmoved = True
-        
+    
 
         if '-' in move:
             target = move.split('-',1)[1]
@@ -826,7 +822,6 @@ class Board:
 
         self.hashBoard()
         self.movecounter += 1
-        
 
     def hashBoard(self):
         
@@ -862,6 +857,3 @@ class Board:
         print(''.join(rowtoprint))        
         
         return ""
-
-
-
