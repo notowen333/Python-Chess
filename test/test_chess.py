@@ -55,11 +55,11 @@ class TestChess(unittest.TestCase):
         
         tb = Board(True)
 
-        for i in range(len(move_list)):
+        for i, move in enumerate(move_list):
             white_to_move = True if i % 2 == 0 else False
             legal_moves = tb.generateLegalMoves(white_to_move)
             self.assertEqual(legal_moves, check_list[i])
-            tb.move(move_list[i],white_to_move)
+            tb.move(move,white_to_move)
             tb.createboard()
 
 if __name__ == '__main__':

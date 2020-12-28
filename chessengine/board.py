@@ -545,40 +545,22 @@ class Board:
 
         return l
 
+
+
     def generateControlledSquares(self, isWhite):
 
         l = []
         occupiedpositions = set()
 
-        for Piece in self.whitepieces:
+        for Piece in self.whitepieces + self.blackpieces:
             occupiedpositions.add(Piece.pos)
 
-        for Piece in self.blackpieces: 
-            occupiedpositions.add(Piece.pos)
+        pieces = self.whitepieces if isWhite else self.blackpieces
 
-        if isWhite:
-            pieces = self.whitepieces
-        else:
-            pieces = self.blackpieces
-
+        pp = {Pawn: self.generatePawnSquares, Rook: self.generateRookSquares, Knight: self.generateKnightSquares, Bishop: self.generateBishopSquares,
+              King: self.generateKingSquares, Queen: self.generateQueenSquares}
         for Piece in pieces:
-            if type(Piece) is Pawn:
-                l.append(self.generatePawnSquares(Piece, occupiedpositions))
-            
-            if type(Piece) is Rook:
-                l.append(self.generateRookSquares(Piece, occupiedpositions))
-
-            if type(Piece) is Knight:
-                l.append(self.generateKnightSquares(Piece, occupiedpositions))
-                
-            if type(Piece) is Bishop:
-                l.append(self.generateBishopSquares(Piece, occupiedpositions))
-            
-            if type(Piece) is King:
-                l.append(self.generateKingSquares(Piece, occupiedpositions))
-            
-            if type(Piece) is Queen:
-                l.append(self.generateQueenSquares(Piece, occupiedpositions))
+            l.append(pp[type(Piece)](Piece, occupiedpositions))
 
         return [item for sublist in l for item in sublist]
 
@@ -618,39 +600,31 @@ class Board:
         #try up
         crow = row + 1
         while crow < 8:
-            if (crow,rank) not in occupiedpositions:
-                l.append((crow, rank))
-            else:
-                l.append((crow, rank))
+            l.append((crow, rank))
+            if (crow,rank) in occupiedpositions:
                 break
             crow += 1
 
         #try down
         crow = row - 1
         while crow > - 1:
-            if (crow,rank) not in occupiedpositions:
-                l.append((crow, rank))
-            else:
-                l.append((crow, rank))
+            l.append((crow, rank))
+            if (crow,rank) in occupiedpositions:
                 break
             crow -= 1
 
         #try right
         crank = rank + 1
         while crank < 8:
-            if (row,crank) not in occupiedpositions:
-                l.append((row, crank))
-            else:
-                l.append((row, crank))
+            l.append((row, crank))
+            if (row,crank) in occupiedpositions:
                 break
             crank += 1
 
         crank = rank - 1
         while crank > - 1:
-            if (row,crank) not in occupiedpositions:
-                l.append((row, crank))
-            else:
-                l.append((row, crank))
+            l.append((row, crank))
+            if (row,crank) in occupiedpositions:
                 break
             crank -= 1
 
@@ -664,39 +638,31 @@ class Board:
         #try up
         crow = row + 1
         while crow < 8:
-            if (crow,rank) not in occupiedpositions:
-                l.append((crow, rank))
-            else:
-                l.append((crow, rank))
+            l.append((crow, rank))
+            if (crow,rank) in occupiedpositions:
                 break
             crow += 1
 
         #try down
         crow = row - 1
         while crow > - 1:
-            if (crow,rank) not in occupiedpositions:
-                l.append((crow, rank))
-            else:
-                l.append((crow, rank))
+            l.append((crow, rank))
+            if (crow,rank) in occupiedpositions:
                 break
             crow -= 1
 
         #try right
         crank = rank + 1
         while crank < 8:
-            if (row,crank) not in occupiedpositions:
-                l.append((row, crank))
-            else:
-                l.append((row, crank))
+            l.append((row, crank))
+            if (row,crank) in occupiedpositions:
                 break
             crank += 1
 
         crank = rank - 1
         while crank > - 1:
-            if (row,crank) not in occupiedpositions:
-                l.append((row, crank))
-            else:
-                l.append((row, crank))
+            l.append((row, crank))
+            if (row,crank) in occupiedpositions:
                 break
             crank -= 1
 
@@ -704,10 +670,8 @@ class Board:
         crow = row + 1
         crank = rank + 1
         while crow < 8 and crank < 8:
-            if (crow, crank) not in occupiedpositions:
-                l.append((crow, crank))
-            else:
-                l.append((crow, crank))
+            l.append((row, crank))
+            if (row,crank) in occupiedpositions:
                 break
             crow += 1
             crank += 1
@@ -717,10 +681,8 @@ class Board:
         crow = row + 1
         crank = rank - 1
         while crow < 8 and crank > -1:
-            if (crow, crank) not in occupiedpositions:
-                l.append((crow, crank))
-            else:
-                l.append((crow, crank))
+            l.append((row, crank))
+            if (row,crank) in occupiedpositions:
                 break
             crow += 1
             crank -= 1
@@ -729,10 +691,8 @@ class Board:
         crow = row - 1
         crank = rank + 1
         while crow > - 1 and crank < 8:
-            if (crow, crank) not in occupiedpositions:
-                l.append((crow, crank))
-            else:
-                l.append((crow, crank))
+            l.append((row, crank))
+            if (row,crank) in occupiedpositions:
                 break
             crow -= 1
             crank += 1
