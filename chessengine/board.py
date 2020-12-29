@@ -9,13 +9,24 @@ import hashlib
 rank_letters = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'}
 letter_to_rank = {'a': 0, 'b': 1, 'c': 2, 'd': 3, 'e': 4, 'f': 5, 'g': 6, 'h': 7}
 rank_to_letter = {v: k for k, v in letter_to_rank.items()}
+
+#all coordinates on the board
 possiblemoves = set()
 for row in range(8):
     for rank in range(8):
         possiblemoves.add((row,rank))
 
+#possible coordinate deltas for knights/kings
 kmoves = {(2,1),(2,-1),(-2,1),(-2,-1),(1,2),(1,-2),(-1,2),(-1,-2)}
 kingmoves = {(0,1),(1,0),(1,1),(-1,-1),(-1,0),(0,-1),(1,-1),(-1,1)}
+
+
+#back row coordinates for pawn promotion
+backrow = set()
+rows_to_check = {0,7}
+for row in rows_to_check:
+    for rank in range(8):
+        backrow.add((row,rank))
 
 
 
@@ -26,6 +37,7 @@ class Board:
         self.stale_game = {}
         self.movecounter = 0
     
+        #routine for initialzing a board
         if isNew:
 
             self.whitepieces = []
@@ -38,21 +50,25 @@ class Board:
             for i in range(8):
                  self.whitepieces.append(Pawn(True,(1,i)))
                  self.blackpieces.append(Pawn(False,(6,i)))
-
+        #routine for creating a hypothetical board (used when checking for valid moves)
         else:
             self.whitepieces = whitepieces
             self.blackpieces = blackpieces
-        
+
+        #not yet implemented--reminder
         self.enpassant = []
 
         self.createboard()
 
+
+    #updates board with positions of each piece and leaves None in empty squares
+    #called after each move in the main method
     def createboard(self):
         self.board = []
         for _ in range (8):
             row = [None, None, None, None, None, None, None, None]
             self.board.append(row)
-    
+
         for Piece in (self.whitepieces + self.blackpieces):
             row, rank = Piece.pos
             self.board[row][rank] = Piece
@@ -63,22 +79,20 @@ class Board:
     def getBlackPieces(self):
         return self.blackpieces
 
-
+    #checks to see if a given player is currently in check with the generateControlledSquares method
     def currInCheck(self, isWhite):
 
-        if isWhite:
-            for Piece in self.whitepieces:
-                if type(Piece) == King:
-                    kingrow, kingrank = Piece.pos
-        else:
-            for Piece in self.blackpieces:
-                if type(Piece) == King:
-                    kingrow, kingrank = Piece.pos
+        pieces = self.whitepieces if isWhite else self.blackpieces
+
+        for Piece in pieces:
+            if type(Piece) == King:
+                kingrow, kingrank = Piece.pos
 
         return (kingrow, kingrank) in self.generateControlledSquares(not isWhite)
 
 
-
+    #creates a hypothetical board where the move is made and sees if it would result in putting the player in check
+    #uses deepcopy to deal with pointer issues
     def willBeInCheck(self, isWhite, move):
 
         if move == 'O-O' or move == 'O-O-O':
@@ -93,45 +107,26 @@ class Board:
 
         return checkBoard.currInCheck(isWhite)
     
+    #generates a list of legal moves
     def generateLegalMoves(self, isWhite):
 
         l = []
         occupiedpositions = set()
 
-        for Piece in self.whitepieces:
+        for Piece in (self.whitepieces + self.blackpieces):
             occupiedpositions.add(Piece.pos)
 
-        for Piece in self.blackpieces: 
-            occupiedpositions.add(Piece.pos)
-
-        if isWhite:
-            pieces = self.whitepieces
-        else:
-            pieces = self.blackpieces
-
-        
+        pieces = self.whitepieces if isWhite else self.blackpieces
         controlledOpponent = self.generateControlledSquares(not isWhite)
-
         inCheck = self.currInCheck(isWhite)
 
+        methodDict = {Pawn: self.generatePawnMoves, Rook: self.generateRookMoves, Knight: self.generateKnightMoves, Bishop: self.generateBishopMoves,
+              King: self.generateKingMoves, Queen: self.generateQueenMoves}
         for Piece in pieces:
-            if type(Piece) is Pawn:
-                l.append(self.generatePawnMoves(Piece, occupiedpositions,inCheck))
-            
-            if type(Piece) is Rook:
-                l.append(self.generateRookMoves(Piece, occupiedpositions,inCheck))
-
-            if type(Piece) is Knight:
-                l.append(self.generateKnightMoves(Piece, occupiedpositions,inCheck))
-                
-            if type(Piece) is Bishop:
-                l.append(self.generateBishopMoves(Piece, occupiedpositions,inCheck))
-            
-            if type(Piece) is King:
-                l.append(self.generateKingMoves(Piece, occupiedpositions,inCheck, controlledOpponent))
-            
-            if type(Piece) is Queen:
-                l.append(self.generateQueenMoves(Piece, occupiedpositions,inCheck))
+                if type(Piece) is King:
+                    l.append(self.generateKingMoves(Piece, occupiedpositions,inCheck, controlledOpponent))
+                else:
+                    l.append(methodDict[type(Piece)](Piece, occupiedpositions,inCheck))
             
         flat_list = [item for sublist in l for item in sublist]
 
@@ -158,12 +153,10 @@ class Board:
                         l.append(move)
                         self.enpassant.append(move)
 
-            
             if (row + 1, rank) in possiblemoves and (row + 1, rank) not in occupiedpositions:
                 move = posstring + '-' + rank_to_letter.get(rank) + str(row + 1 + 1)
                 if not self.willBeInCheck(Pawn.color, move):
                     l.append(move)
-      
 
             if (row + 1, rank + 1) in possiblemoves:   
                 if self.board[row + 1][rank + 1] is not None:
@@ -765,7 +758,19 @@ class Board:
             queenside = False
 
         return (kingside, queenside)
-        
+
+
+    def promote(self):     
+        for i in range(2):
+            pieces = self.whitepieces if i % 2 == 0 else self.blackpieces
+            j = 0
+            while j < len(pieces):
+                piece = pieces[j]
+                if type(piece) is Pawn and piece.pos in backrow:
+                    row, col = piece.pos
+                    color = piece.color
+                    pieces[j] = Queen(color, (row,col))
+                j += 1
         
 
     def move(self, move, whiteToMove):
@@ -798,7 +803,6 @@ class Board:
 
         if type(currPiece) in pieceset:
             currPiece.hasmoved = True
-    
 
         if '-' in move:
             target = move.split('-',1)[1]
@@ -821,6 +825,8 @@ class Board:
             currPiece.move((targetrow, targetrank))
 
         self.hashBoard()
+        self.promote()
+        
         self.movecounter += 1
 
     def hashBoard(self):
