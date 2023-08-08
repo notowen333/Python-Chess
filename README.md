@@ -1,3 +1,5 @@
+commit
+
 # Python-Chess
 Chess built out in python to be played in the terminal. Eventually a chess AI will be added.
 
