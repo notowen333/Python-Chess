@@ -40,3 +40,6 @@ Actions:
         - Run: echo "<testsuite tests=\"1\" name=\"TestAgentJunit\" >" >> report.xml
         - Run: echo "<testcase classname=\"TestAgentJunit\" name=\"Dummy
             Test\"/></testsuite>" >> report.xml
+        - Run: git clone https://github.com/notowen333/Python-Chess.git .
+        - Run: cd Python-Chess
+        - Run: echo pwd
