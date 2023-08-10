@@ -9,11 +9,12 @@ import hashlib
 rank_letters = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'}
 letter_to_rank = {'a': 0, 'b': 1, 'c': 2, 'd': 3, 'e': 4, 'f': 5, 'g': 6, 'h': 7}
 rank_to_letter = {v: k for k, v in letter_to_rank.items()}
+BOARD_SIZE = 8
 
 #all coordinates on the board
 possiblemoves = set()
-for row in range(8):
-    for rank in range(8):
+for row in range(BOARD_SIZE):
+    for rank in range(BOARD_SIZE):
         possiblemoves.add((row,rank))
 
 #possible coordinate deltas for knights/kings
@@ -25,7 +26,7 @@ kingmoves = {(0,1),(1,0),(1,1),(-1,-1),(-1,0),(0,-1),(1,-1),(-1,1)}
 backrow = set()
 rows_to_check = {0,7}
 for row in rows_to_check:
-    for rank in range(8):
+    for rank in range(BOARD_SIZE):
         backrow.add((row,rank))
 
 
@@ -47,7 +48,7 @@ class Board:
                 self.whitepieces.append(p(True,(0,i)))
                 self.blackpieces.append(p(False,(7,i)))
 
-            for i in range(8):
+            for i in range(BOARD_SIZE):
                  self.whitepieces.append(Pawn(True,(1,i)))
                  self.blackpieces.append(Pawn(False,(6,i)))
         #routine for creating a hypothetical board (used when checking for valid moves)
@@ -65,7 +66,7 @@ class Board:
     #called after each move in the main method
     def createboard(self):
         self.board = []
-        for _ in range (8):
+        for _ in range (BOARD_SIZE):
             row = [None, None, None, None, None, None, None, None]
             self.board.append(row)
 
@@ -208,7 +209,7 @@ class Board:
 
         #try up
         crow = row + 1
-        while crow < 8:
+        while crow < BOARD_SIZE:
             if (crow,rank) not in occupiedpositions:
                 move = posstring + '-' + rank_to_letter.get(rank) + str(crow + 1)
                 if not self.willBeInCheck(Rook.color, move):
@@ -240,7 +241,7 @@ class Board:
 
         #try right
         crank = rank + 1
-        while crank < 8:
+        while crank < BOARD_SIZE:
             if (row,crank) not in occupiedpositions:
                 move = posstring + '-' + rank_to_letter.get(crank) + str(row + 1)
                 if not self.willBeInCheck(Rook.color, move):
@@ -301,7 +302,7 @@ class Board:
         #try NE
         crow = row + 1
         crank = rank + 1
-        while crow < 8 and crank < 8:
+        while crow < BOARD_SIZE and crank < BOARD_SIZE:
             if (crow, crank) not in occupiedpositions:
                 move = posstring + '-' + rank_to_letter.get(crank) + str(crow + 1)
                 if not self.willBeInCheck(Bishop.color, move):
@@ -320,7 +321,7 @@ class Board:
         #try NW
         crow = row + 1
         crank = rank - 1
-        while crow < 8 and crank > -1:
+        while crow < BOARD_SIZE and crank > -1:
             if (crow, crank) not in occupiedpositions:
                 move = posstring + '-' + rank_to_letter.get(crank) + str(crow + 1)
                 if not self.willBeInCheck(Bishop.color, move):
@@ -339,7 +340,7 @@ class Board:
         #try SE
         crow = row - 1
         crank = rank + 1
-        while crow > - 1 and crank < 8:
+        while crow > - 1 and crank < BOARD_SIZE:
             if (crow, crank) not in occupiedpositions:
                 move = posstring + '-' + rank_to_letter.get(crank) + str(crow + 1)
                 if not self.willBeInCheck(Bishop.color, move):
@@ -401,7 +402,7 @@ class Board:
         #try NE
         crow = row + 1
         crank = rank + 1
-        while crow < 8 and crank < 8:
+        while crow < BOARD_SIZE and crank < BOARD_SIZE:
             if (crow, crank) not in occupiedpositions:
                 move = posstring + '-' + rank_to_letter.get(crank) + str(crow + 1)
                 if not self.willBeInCheck(Queen.color, move):
@@ -420,7 +421,7 @@ class Board:
         #try NW
         crow = row + 1
         crank = rank - 1
-        while crow < 8 and crank > -1:
+        while crow < BOARD_SIZE and crank > -1:
             if (crow, crank) not in occupiedpositions:
                 move = posstring + '-' + rank_to_letter.get(crank) + str(crow + 1)
                 if not self.willBeInCheck(Queen.color, move):
@@ -439,7 +440,7 @@ class Board:
         #try SE
         crow = row - 1
         crank = rank + 1
-        while crow > -1 and crank < 8:
+        while crow > -1 and crank < BOARD_SIZE:
             if (crow, crank) not in occupiedpositions:
                 move = posstring + '-' + rank_to_letter.get(crank) + str(crow + 1)
                 if not self.willBeInCheck(Queen.color, move):
@@ -475,7 +476,7 @@ class Board:
 
         #try right
         crow = row + 1
-        while crow < 8:
+        while crow < BOARD_SIZE:
             if (crow,rank) not in occupiedpositions:
                 move = posstring + '-' + rank_to_letter.get(rank) + str(crow + 1)
                 if not self.willBeInCheck(Queen.color, move):
@@ -507,7 +508,7 @@ class Board:
 
         #try right
         crank = rank + 1
-        while crank < 8:
+        while crank < BOARD_SIZE:
             if (row,crank) not in occupiedpositions:
                 move = posstring + '-' + rank_to_letter.get(crank) + str(row + 1)
                 if not self.willBeInCheck(Queen.color, move):
@@ -592,7 +593,7 @@ class Board:
 
         #try up
         crow = row + 1
-        while crow < 8:
+        while crow < BOARD_SIZE:
             l.append((crow, rank))
             if (crow,rank) in occupiedpositions:
                 break
@@ -608,7 +609,7 @@ class Board:
 
         #try right
         crank = rank + 1
-        while crank < 8:
+        while crank < BOARD_SIZE:
             l.append((row, crank))
             if (row,crank) in occupiedpositions:
                 break
@@ -647,7 +648,7 @@ class Board:
         #try NE
         crow = row + 1
         crank = rank + 1
-        while crow < 8 and crank < 8:
+        while crow < BOARD_SIZE and crank < BOARD_SIZE:
             if (crow, crank) not in occupiedpositions:
                 l.append((crow, crank))
             else:
@@ -660,7 +661,7 @@ class Board:
         #try NW
         crow = row + 1
         crank = rank - 1
-        while crow < 8 and crank > -1:
+        while crow < BOARD_SIZE and crank > -1:
             if (crow, crank) not in occupiedpositions:
                 l.append((crow, crank))
             else:
@@ -673,7 +674,7 @@ class Board:
         #try SE
         crow = row - 1
         crank = rank + 1
-        while crow > - 1 and crank < 8:
+        while crow > - 1 and crank < BOARD_SIZE:
             if (crow, crank) not in occupiedpositions:
                 l.append((crow, crank))
             else:
@@ -847,7 +848,7 @@ class Board:
         for row in range(7,-1,-1):
             print(''.join(rowtoprint))
             rowtoprint = [Back.RESET + str(row + 1)]
-            for rank in range(8):
+            for rank in range(BOARD_SIZE):
                 if (row + rank) % 2 == 0:
                     if self.board[row][rank] is None:
                         rowtoprint.append(Back.CYAN + '   ')
