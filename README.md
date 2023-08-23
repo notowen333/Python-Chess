@@ -1,5 +1,5 @@
 # Python-Chess
-Chess built out in python to be played in the terminal.
+Chess built out in python to be played in the terminal. 
 
 This Chess game uses long-form algebraic chess notation (So you say e2-e4, instead of e4, or you say Kb1xc3 to
 say knight takes on c3). 
@@ -16,7 +16,7 @@ Before each move, all possible moves are generated and displayed. This includes 
 
 After a move is played, the game checks for stalemates where a player has no available moves and for repitition stalemates by hashing the board and checking if any hash points to a value of 3. Then the game auto-queens any pawns in the their respective final row.
 
-Of course, the game ends with checkmate when a player is in check and has no available moves.
+Of course, the game ends with checkmate when a player is in check and has no available moves.  
 
 Gameplay Images:
 
