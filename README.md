@@ -1,5 +1,5 @@
 # Python-Chess
-Chess built out in python to be played in the terminal. Eventually a chess AI will be added. If I find the time ;) :O
+Chess built out in python to be played in the terminal. Eventually a chess AI will be added. If I find the time ;) show me bug
 
 This Chess game uses long-form algebraic chess notation (So you say e2-e4, instead of e4, or you say Kb1xc3 to
 say knight takes on c3). 
